@@ -1,8 +1,11 @@
 listDokter = [
-    {"nama": "Dr John"},
-    {"nama": "Dr Paul"},
-    {"nama": "Dr Ringo"}
+    {"nama": "Dr John", "username": "john", "pass": "123", "klinik": "KLINIK GIGI"},
+    {"nama": "Dr Paul", "username": "paul", "pass": "123", "klinik": "KLINIK THT"},
+    {"nama": "Dr Ringo", "username": "ringo",
+        "pass": "123", "klinik": "KLINIK UMUM"}
 ]
+
+
 listKlinik = [
     {
         "nama": "Klinik Gigi",
@@ -10,36 +13,43 @@ listKlinik = [
         "jadwal": [
             {
                 "hari": "Senin",
+                "day": 0,
                 "mulai": "09:00",
-                "selesai": "15:00"
+                "selesai": "23:59"
             },
             {
                 "hari": "Selasa",
+                "day": 1,
                 "mulai": "09:00",
                 "selesai": "15:00"
             },
             {
                 "hari": "Rabu",
+                "day": 2,
                 "mulai": "09:00",
                 "selesai": "15:00"
             },
             {
                 "hari": "Kamis",
+                "day": 3,
                 "mulai": "09:00",
                 "selesai": "15:00"
             },
             {
                 "hari": "Jumat",
+                "day": 4,
                 "mulai": "09:00",
                 "selesai": "12:00"
             },
             {
                 "hari": "Sabtu",
+                "day": 5,
                 "mulai": "13:00",
                 "selesai": "18:00"
             },
             {
                 "hari": "Minggu",
+                "day": 6,
                 "mulai": "13:00",
                 "selesai": "18:00"
             },
@@ -51,36 +61,43 @@ listKlinik = [
         "jadwal": [
             {
                 "hari": "Senin",
+                "day": 0,
                 "mulai": "09:00",
-                "selesai": "15:00"
+                "selesai": "23:59"
             },
             {
                 "hari": "Selasa",
+                "day": 1,
                 "mulai": "09:00",
                 "selesai": "15:00"
             },
             {
                 "hari": "Rabu",
+                "day": 2,
                 "mulai": "09:00",
                 "selesai": "15:00"
             },
             {
                 "hari": "Kamis",
+                "day": 3,
                 "mulai": "09:00",
                 "selesai": "15:00"
             },
             {
                 "hari": "Jumat",
+                "day": 4,
                 "mulai": "09:00",
                 "selesai": "12:00"
             },
             {
                 "hari": "Sabtu",
+                "day": 5,
                 "mulai": "13:00",
                 "selesai": "18:00"
             },
             {
                 "hari": "Minggu",
+                "day": 6,
                 "mulai": "13:00",
                 "selesai": "18:00"
             },
@@ -92,36 +109,43 @@ listKlinik = [
         "jadwal": [
             {
                 "hari": "Senin",
+                "day": 0,
                 "mulai": "09:00",
                 "selesai": "15:00"
             },
             {
                 "hari": "Selasa",
+                "day": 1,
                 "mulai": "09:00",
                 "selesai": "15:00"
             },
             {
                 "hari": "Rabu",
+                "day": 2,
                 "mulai": "09:00",
                 "selesai": "15:00"
             },
             {
                 "hari": "Kamis",
+                "day": 3,
                 "mulai": "09:00",
                 "selesai": "15:00"
             },
             {
                 "hari": "Jumat",
+                "day": 4,
                 "mulai": "09:00",
                 "selesai": "12:00"
             },
             {
                 "hari": "Sabtu",
+                "day": 5,
                 "mulai": "13:00",
                 "selesai": "18:00"
             },
             {
                 "hari": "Minggu",
+                "day": 6,
                 "mulai": "13:00",
                 "selesai": "18:00"
             },

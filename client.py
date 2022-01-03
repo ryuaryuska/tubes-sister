@@ -17,15 +17,24 @@ def registrasiNama():
     nama = input("Nama Lengkap: ")
     while nama == "":
         print("data tidak boleh kosong")
-        registrasiNama()
+        nama = registrasiNama()
     return str(nama)
 
 
 def registrasiTglLahir():
     print("Tanggal Lahir:   ")
     tahun = input(" Tahun:  ")
+    while tahun == "":
+        print("data tidak boleh kosong")
+        tahun = input(" Tahun:  ")
     bulan = input(" Bulan:  ")
+    while bulan == "":
+        print("data tidak boleh kosong")
+        bulan = input("  Bulan:   ")
     tgl = input("  Hari:   ")
+    while tgl == "":
+        print("data tidak boleh kosong")
+        tgl = input("  Hari:   ")
     tglLahir = tahun + "-" + bulan + "-" + tgl
     return str(tglLahir)
 
@@ -35,7 +44,7 @@ def registrasiGender():
     gender = ""
     while getGender == "":
         print("data tidak boleh kosong")
-        registrasiGender()
+        getGender = registrasiGender()
 
     if getGender == "l":
         gender = "laki-laki"
@@ -43,8 +52,8 @@ def registrasiGender():
         gender = "perempuan"
     else:
         print("data tidak valid")
-        while getGender == "":
-            registrasiGender()
+        while getGender != "laki-laki" and getGender != "perempuan":
+            getGender = registrasiGender()
     return str(gender)
 
 
@@ -61,16 +70,16 @@ def regisAntrian():
     t = PrettyTable(["No", "Nama", "Antrian"])
     t.add_row(["1", "Klinik Gigi", klinikGigi])
     t.add_row(["2", "Klinik THT", klinikTHT])
-    t.add_row(["3", "Klinik Gigi", klinikUmum])
+    t.add_row(["3", "Klinik Umum", klinikUmum])
     print(t)
     klinik = input("Pilih Klinik: ")
 
     if klinik == "1":
         klinik = "gigi"
     elif klinik == "2":
-        klinik == "tht"
+        klinik = "tht"
     elif klinik == "3":
-        klinik == "umum"
+        klinik = "umum"
     else:
         print("data yang anda masukkan tidak valid")
         regisAntrian()
@@ -81,8 +90,14 @@ def regisAntrian():
         main()
     else:
         data = p.TambahAntrian(klinik, pasien)
-        print("Daftar antrian berhasil, nomor antrian anda: " +
-              data['antrian'])
+        waktuDatang = p.GetWaktuDatang(klinik, pasien["nrm"])
+        print(waktuDatang)
+        if waktuDatang == "":
+            print(
+                "Mohon maaf antrian sudah pada batas maksimum, silakan daftar keesokan hari")
+        else:
+            print("Daftar antrian berhasil, nomor antrian anda: " +
+                  str(data['antrian']) + "\n Silakan datang pada jam " + waktuDatang)
 
 
 def main():

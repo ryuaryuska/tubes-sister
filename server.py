@@ -14,8 +14,7 @@ class RequestHandler(SimpleXMLRPCRequestHandler):
 
 
 # Buat server
-with SimpleXMLRPCServer(('localhost', 8001,),
-                        requestHandler=RequestHandler) as server:
+with SimpleXMLRPCServer(('localhost', 8001), requestHandler=RequestHandler, allow_none=True) as server:
 
     class Pasien:
         def __init__(self, name, birthDate, gender):
@@ -31,17 +30,8 @@ with SimpleXMLRPCServer(('localhost', 8001,),
             self.age = today.year - self.birthDate.year - \
                 ((today.month, today.day) < (self.birthDate.month, self.birthDate.day))
 
-    def GetWaktuAntrian(nrm, array):
-        n = 0
-        for x in array:
-            if x.nrm == nrm:
-                n = n + 15
-                break
-        hours_added = datetime.timedelta(hours=hours)
-        future_date_and_time = current_date_and_time + hours_added
-        return future_date_and_time.strftime('%H:%M')
-
-    listPasien = []
+    listPasien = [
+    ]
 
     antrianGigi = []
     antrianTHT = []
@@ -51,7 +41,7 @@ with SimpleXMLRPCServer(('localhost', 8001,),
         for x in listPasien:
             if x["nrm"] == nrm:
                 return x
-            return False
+        return False
 
     def GetTotalAntrian(klinik):
         if klinik == "gigi":
@@ -62,8 +52,6 @@ with SimpleXMLRPCServer(('localhost', 8001,),
             return len(antrianUmum)
 
     def RegisPasien(name, birthDate, gender):
-        print("masuk")
-
         tgl = datetime.datetime.strptime(
             birthDate, "%Y-%m-%d").date()
         pasien = Pasien(name, tgl, gender)
@@ -79,39 +67,50 @@ with SimpleXMLRPCServer(('localhost', 8001,),
         return data
 
     def TambahAntrian(klinik, pasien):
+        pasien["antriAt"] = datetime.datetime.now()
         if klinik == "gigi":
             antrianGigi.append(pasien)
-            pasien["antrian"] = GetTotalAntrian("gigi")
+            if len(antrianGigi) == 0:
+                pasien["antrian"] = GetTotalAntrian("gigi")
+            else:
+                pasien["antrian"] = antrianGigi[antrianGigi.index(
+                    pasien) - 1]['antrian'] + 1
         elif klinik == "tht":
             antrianTHT.append(pasien)
-            pasien["antrian"] = GetTotalAntrian("tht")
+            if len(antrianTHT) == 0:
+                pasien["antrian"] = GetTotalAntrian("gigi")
+            else:
+                pasien["antrian"] = antrianTHT[antrianTHT.index(
+                    pasien) - 1]['antrian'] + 1
         elif klinik == "umum":
             antrianUmum.append(pasien)
-            pasien["antrian"] = GetTotalAntrian("umum")
+            if len(antrianUmum) == 0:
+                pasien["antrian"] = GetTotalAntrian("gigi")
+            else:
+                pasien["antrian"] = antrianUmum[antrianUmum.index(
+                    pasien) - 1]['antrian'] + 1
         return pasien
 
-    def PasienSelesai(klinik, antrian):
+    def PasienSelesai(klinik):
         if klinik == "gigi":
             antrianGigi.pop(0)
+            return antrianGigi
+
         elif klinik == "tht":
             antrianTHT.pop(0)
+            return antrianTHT
+
         elif klinik == "umum":
             antrianUmum.pop(0)
+            return antrianUmum
 
     def LihatAntrian(klinik):
-        t = PrettyTable(['No Antrian', 'Nomor Rekam Medis', 'Nama', 'Umur'])
-
-        def listAntrian(arr):
-            for x in arr:
-                t.add_row([x.antrian, x.nrm, x.namem, x.age])
-            print(t)
-
         if klinik == "gigi":
-            listAntrian(antrianGigi)
+            return antrianGigi
         elif klinik == "tht":
-            listAntrian(antrianTHT)
+            return antrianTHT
         elif klinik == "umum":
-            listAntrian(antrianUmum)
+            return antrianUmum
 
     def GetListKlinik():
         return data.Klinik()
@@ -120,26 +119,57 @@ with SimpleXMLRPCServer(('localhost', 8001,),
         return data.Dokter()
 
     def GetWaktuDatang(klinik, nrm):
-        menit = 15
-        i = 0
+        print("KLINIK " + klinik)
         if klinik == "gigi":
             for x in antrianGigi:
-                if x['nrm'] != nrm:
-                    i = i + 1
-                else:
+                if x['nrm'] == nrm:
+                    pasien = x
                     break
+            listPasien = antrianGigi
+            getJadwal = data.Klinik(
+            )[0]["jadwal"][datetime.date.today().weekday()]
         elif klinik == "tht":
             for x in antrianTHT:
-                if x['nrm'] != nrm:
-                    i = i + 1
-                else:
+                if x['nrm'] == nrm:
+                    pasien = x
                     break
+            listPasien = antrianTHT
+            getJadwal = data.Klinik(
+            )[1]["jadwal"][datetime.date.today().weekday()]
         elif klinik == "umum":
             for x in antrianUmum:
-                if x['nrm'] != nrm:
-                    i = i + 1
-                else:
+                if x['nrm'] == nrm:
+                    pasien = x
                     break
+            listPasien = antrianUmum
+            getJadwal = data.Klinik(
+            )[2]["jadwal"][datetime.date.today().weekday()]
+
+        waktuMulai = datetime.datetime.strptime(
+            getJadwal["mulai"], "%H:%M")
+        waktuSelesai = datetime.datetime.strptime(
+            getJadwal["selesai"], "%H:%M")
+
+        if pasien["antriAt"].time() < waktuMulai.time():
+            if len(listPasien) == 1:
+                return waktuMulai.strftime("%H:%M")
+            else:
+                return (waktuMulai + datetime.timedelta(minutes=listPasien.index(pasien) * 15)).strftime("%H:%M")
+        elif pasien["antriAt"].time() > waktuSelesai.time():
+            print(pasien["antriAt"].time())
+            print(waktuSelesai.time())
+            listPasien.pop(listPasien.index(pasien))
+            return ""
+        else:
+            if len(pasien) == 1:
+                return (datetime.datetime.now() + datetime.timedelta(minutes=15)).strftime("%H:%M")
+            return (listPasien[listPasien.index(pasien)-1]["antriAt"] + datetime.timedelta(minutes=15)).strftime("%H:%M")
+
+    def Login(user, password):
+        for x in data.Dokter():
+            if x["username"] == user and x["pass"] == password:
+                return x
+        return False
 
     server.register_function(CheckNRM)
     server.register_function(TambahAntrian)
@@ -149,6 +179,8 @@ with SimpleXMLRPCServer(('localhost', 8001,),
     server.register_function(RegisPasien)
     server.register_function(GetListKlinik)
     server.register_function(GetListDokter)
+    server.register_function(GetWaktuDatang)
+    server.register_function(Login)
 
     print("SERVER RUNNING...")
     # Jalankan server
