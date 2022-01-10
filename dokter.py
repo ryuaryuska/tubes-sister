@@ -3,6 +3,7 @@ import datetime
 import getpass
 from prettytable import PrettyTable
 from pyfiglet import Figlet
+import sys
 
 p = xmlrpc.client.ServerProxy("http://localhost:8001/RPC2", allow_none=True)
 
@@ -29,6 +30,7 @@ def main():
     print("MENU")
     print("1. Lihat list antrian pasien")
     print("2. Selesaikan pasien saat ini")
+    print("3. Keluar")
 
     menu = input("Pilih menu: ")
 
@@ -48,6 +50,8 @@ def main():
                 ['No Antrian', 'Nomor Rekam Medis', 'Nama', 'Umur'])
             t.add_row([n[0]["antrian"], n[0]["nrm"],
                       n[0]["name"], n[0]["age"]])
+    elif menu == "3":
+        sys.exit()
 
     main()
 

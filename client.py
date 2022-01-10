@@ -1,6 +1,7 @@
 import xmlrpc.client
 import datetime
 from prettytable import PrettyTable
+import sys
 
 p = xmlrpc.client.ServerProxy("http://localhost:8001/RPC2", allow_none=True)
 
@@ -15,6 +16,8 @@ def validateDate(date_text):
 
 def registrasiNama():
     nama = input("Nama Lengkap: ")
+    if nama == "0":
+        main()
     while nama == "":
         print("data tidak boleh kosong")
         nama = registrasiNama()
@@ -74,6 +77,9 @@ def regisAntrian():
     print(t)
     klinik = input("Pilih Klinik: ")
 
+    if klinik == "0":
+        main()
+
     if klinik == "1":
         klinik = "gigi"
     elif klinik == "2":
@@ -85,19 +91,24 @@ def regisAntrian():
         regisAntrian()
     nrm = input("Masukkan Nomor Rekam Medis anda: ")
     pasien = p.CheckNRM(nrm)
+
+    checkAntrian = p.CheckAntrian(nrm)
+    if checkAntrian != False:
+        print("Nomor Pasien " + nrm + " telah terdaftar pada antrian yang lain")
+        main()
+
     if pasien == False:
         print("Data tidak ditemukan!")
         main()
     else:
         data = p.TambahAntrian(klinik, pasien)
         waktuDatang = p.GetWaktuDatang(klinik, pasien["nrm"])
-        print(waktuDatang)
         if waktuDatang == "":
             print(
                 "Mohon maaf antrian sudah pada batas maksimum, silakan daftar keesokan hari")
         else:
-            print("Daftar antrian berhasil, nomor antrian anda: " +
-                  str(data['antrian']) + "\n Silakan datang pada jam " + waktuDatang)
+            print("Daftar antrian berhasil, nomor antrian anda: (" +
+                  str(data['antrian']) + ")\n Silakan datang pada jam " + waktuDatang)
 
 
 def main():
@@ -106,6 +117,8 @@ def main():
     print("2. REGISTRASI ANTRIAN")
     print("3. LIHAT DATA DIRI")
     print("4. LIHAT KLINIK YANG TERSEDIA")
+    print("5. LIHAT INFO ANTRIAN")
+    print("6. Keluar")
 
     menu = input("Pilih Menu:   ")
     if menu == "1":
@@ -139,6 +152,19 @@ def main():
         print(t)
     elif menu == "2":
         regisAntrian()
+    elif menu == "5":
+        nrm = input("Masukkan Nomor Rekam Medis Anda: ")
+        data = p.CheckAntrian(nrm)
+        if data == False:
+            print("Data tidak ditemukan!")
+        else:
+            t = PrettyTable(['Nomor Rekam Medis', 'Nama',
+                            "Waktu Datang", "Nomor Antrian"])
+            t.add_row([data['nrm'], data['name'],
+                      data['waktuDatang'], data['antrian']])
+            print(t)
+    elif menu == "6":
+        sys.exit()
     main()
 
 
