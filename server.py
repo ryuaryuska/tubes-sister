@@ -164,11 +164,8 @@ with SimpleXMLRPCServer(('localhost', 8001), requestHandler=RequestHandler, allo
             listAntrian.pop(listAntrian.index(pasien))
             return ""
         else:
-            if len(pasien) == 1:
-                pasien["waktuDatang"] = (datetime.datetime.now(
-                ) + datetime.timedelta(minutes=15)).strftime("%H:%M")
-            pasien["waktuDatang"] = (listAntrian[listAntrian.index(
-                pasien)-1]["antriAt"] + datetime.timedelta(minutes=15)).strftime("%H:%M")
+            pasien["waktuDatang"] = (datetime.datetime.now(
+            ) + datetime.timedelta(minutes=15*len(listAntrian))).strftime("%H:%M")
             waktuDatang = datetime.datetime.strptime(
                 pasien["waktuDatang"], "%H:%M")
             if waktuDatang.time() > waktuSelesai.time():

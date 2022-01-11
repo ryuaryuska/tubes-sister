@@ -159,9 +159,9 @@ def main():
             print("Data tidak ditemukan!")
         else:
             t = PrettyTable(['Nomor Rekam Medis', 'Nama',
-                            "Waktu Datang", "Nomor Antrian"])
+                            "Waktu Datang", "Nomor Antrian", "Klinik"])
             t.add_row([data['nrm'], data['name'],
-                      data['waktuDatang'], data['antrian']])
+                      data['waktuDatang'], data['antrian'], data['klinik']])
             print(t)
     elif menu == "6":
         sys.exit()
