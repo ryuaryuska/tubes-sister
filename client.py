@@ -8,14 +8,14 @@ p = xmlrpc.client.ServerProxy("http://localhost:8001/RPC2", allow_none=True)
 
 def validateDate(date_text):
     try:
-        datetime.datetime.strptime(date_text, '%Y-%m-%d')
+        datetime.datetime.strptime(date_text, "%Y-%m-%d")
         return True
     except ValueError:
         return False
 
 
 def registrasiNama():
-    nama = input("Nama Lengkap: ")
+    nama = input("Nama Lengkap\t\t\t: ")
     if nama == "0":
         main()
     while nama == "":
@@ -25,25 +25,25 @@ def registrasiNama():
 
 
 def registrasiTglLahir():
-    print("Tanggal Lahir:   ")
-    tahun = input(" Tahun:  ")
+    print("Tanggal Lahir: ")
+    tahun = input("\tTahun\t\t\t: ")
     while tahun == "":
         print("data tidak boleh kosong")
-        tahun = input(" Tahun:  ")
-    bulan = input(" Bulan:  ")
+        tahun = input("\tTahun\t\t\t: ")
+    bulan = input("\tBulan\t\t\t: ")
     while bulan == "":
         print("data tidak boleh kosong")
-        bulan = input("  Bulan:   ")
-    tgl = input("  Hari:   ")
+        bulan = input("\tBulan\t\t\t: ")
+    tgl = input("\tHari\t\t\t: ")
     while tgl == "":
         print("data tidak boleh kosong")
-        tgl = input("  Hari:   ")
+        tgl = input("\tHari\t\t\t: ")
     tglLahir = tahun + "-" + bulan + "-" + tgl
     return str(tglLahir)
 
 
 def registrasiGender():
-    getGender = input("Laki-Laki / Perempuan (l/p): ")
+    getGender = input("Laki-Laki / Perempuan (l/p)\t: ")
     gender = ""
     while getGender == "":
         print("data tidak boleh kosong")
@@ -105,10 +105,15 @@ def regisAntrian():
         waktuDatang = p.GetWaktuDatang(klinik, pasien["nrm"])
         if waktuDatang == "":
             print(
-                "Mohon maaf antrian sudah pada batas maksimum, silakan daftar keesokan hari")
+                "Mohon maaf antrian sudah pada batas maksimum, silakan daftar keesokan hari"
+            )
         else:
-            print("Daftar antrian berhasil, nomor antrian anda: (" +
-                  str(data['antrian']) + ")\n Silakan datang pada jam " + waktuDatang)
+            print(
+                "Daftar antrian berhasil, nomor antrian anda: ("
+                + str(data["antrian"])
+                + ")\n Silakan datang pada jam "
+                + waktuDatang
+            )
 
 
 def main():
@@ -134,10 +139,18 @@ def main():
         if data == False:
             print("Data tidak ditemukan!")
         else:
-            t = PrettyTable(['Nomor Rekam Medis', 'Nama', 'Umur',
-                            'Tanggal Lahir', "Jenis Kelamin"])
-            t.add_row([data['nrm'], data['name'], data['age'],
-                       data['birthDate'], data['gender']])
+            t = PrettyTable(
+                ["Nomor Rekam Medis", "Nama", "Umur", "Tanggal Lahir", "Jenis Kelamin"]
+            )
+            t.add_row(
+                [
+                    data["nrm"],
+                    data["name"],
+                    data["age"],
+                    data["birthDate"],
+                    data["gender"],
+                ]
+            )
             print(t)
     elif menu == "4":
         klinik = p.GetListKlinik()
@@ -145,10 +158,8 @@ def main():
         for x in klinik:
             jadwal = ""
             for y in x["jadwal"]:
-                jadwal += y["hari"] + " " + \
-                    y["mulai"] + " - " + \
-                    y["selesai"] + "\n"
-            t.add_row([x['nama'], x['dokter']['nama'], jadwal])
+                jadwal += y["hari"] + " " + y["mulai"] + " - " + y["selesai"] + "\n"
+            t.add_row([x["nama"], x["dokter"]["nama"], jadwal])
         print(t)
     elif menu == "2":
         regisAntrian()
@@ -158,10 +169,18 @@ def main():
         if data == False:
             print("Data tidak ditemukan!")
         else:
-            t = PrettyTable(['Nomor Rekam Medis', 'Nama',
-                            "Waktu Datang", "Nomor Antrian", "Klinik"])
-            t.add_row([data['nrm'], data['name'],
-                      data['waktuDatang'], data['antrian'], data['klinik']])
+            t = PrettyTable(
+                ["Nomor Rekam Medis", "Nama", "Waktu Datang", "Nomor Antrian", "Klinik"]
+            )
+            t.add_row(
+                [
+                    data["nrm"],
+                    data["name"],
+                    data["waktuDatang"],
+                    data["antrian"],
+                    data["klinik"],
+                ]
+            )
             print(t)
     elif menu == "6":
         sys.exit()

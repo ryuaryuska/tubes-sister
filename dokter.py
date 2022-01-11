@@ -27,7 +27,7 @@ def login():
 
 
 def main():
-    print("MENU")
+    print("\nMENU")
     print("1. Lihat list antrian pasien")
     print("2. Selesaikan pasien saat ini")
     print("3. Keluar")
@@ -37,8 +37,7 @@ def main():
     if menu == "1":
         arr = p.LihatAntrian(klinik)
 
-        t = PrettyTable(
-            ['No Antrian', 'Nomor Rekam Medis', 'Nama', 'Umur'])
+        t = PrettyTable(["No Antrian", "Nomor Rekam Medis", "Nama", "Umur"])
         for x in arr:
             t.add_row([x["antrian"], x["nrm"], x["name"], x["age"]])
         print(t)
@@ -46,10 +45,8 @@ def main():
         n = p.PasienSelesai(klinik)
 
         if len(n) > 0:
-            t = PrettyTable(
-                ['No Antrian', 'Nomor Rekam Medis', 'Nama', 'Umur'])
-            t.add_row([n[0]["antrian"], n[0]["nrm"],
-                      n[0]["name"], n[0]["age"]])
+            t = PrettyTable(["No Antrian", "Nomor Rekam Medis", "Nama", "Umur"])
+            t.add_row([n[0]["antrian"], n[0]["nrm"], n[0]["name"], n[0]["age"]])
     elif menu == "3":
         sys.exit()
 
