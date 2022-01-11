@@ -34,10 +34,10 @@ def registrasiTglLahir():
     while bulan == "":
         print("data tidak boleh kosong")
         bulan = input("\tBulan\t\t\t: ")
-    tgl = input("\tHari\t\t\t: ")
+    tgl = input("\tTanggal\t\t\t: ")
     while tgl == "":
         print("data tidak boleh kosong")
-        tgl = input("\tHari\t\t\t: ")
+        tgl = input("\tTanggal\t\t\t: ")
     tglLahir = tahun + "-" + bulan + "-" + tgl
     return str(tglLahir)
 
@@ -111,7 +111,7 @@ def regisAntrian():
             print(
                 "Daftar antrian berhasil, nomor antrian anda: ("
                 + str(data["antrian"])
-                + ")\n Silakan datang pada jam "
+                + ")\nSilakan datang pada pukul "
                 + waktuDatang
             )
 
