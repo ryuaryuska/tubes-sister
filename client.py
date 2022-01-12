@@ -117,7 +117,7 @@ def regisAntrian():
 
 
 def main():
-    print("MENU")
+    print("\nMENU")
     print("1. REGISTRASI PASIEN")
     print("2. REGISTRASI ANTRIAN")
     print("3. LIHAT DATA DIRI")
